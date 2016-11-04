@@ -92,6 +92,8 @@ TopK_PermT.test=function(X,nA,nB,
     }
 
     if(vrb) cat("   Getting permutation t values.",fill=T)
+
+    permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)])
     ExactWRS=t(mapply(permScan, 1:nrow(X)))
 
 
