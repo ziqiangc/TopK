@@ -28,7 +28,7 @@ This function perform TopK exact test on a two group data set (Case-Control stud
 The univariate p-values based on permutation t-test.
 }
 \examples{
-TopK_PermT.test(X,WRSobj)
+TopK_PermT.test(X,7,7)
 
 }
 

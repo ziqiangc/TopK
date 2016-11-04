@@ -12,7 +12,7 @@
 #'          Could be "list" or "vector". See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
 #'
-#' @examples TopK_PermT.test(X,WRSobj)
+#' @examples TopK_PermT.test(X,7,7)
 #'
 #' @importFrom broman perm.test
 #'
@@ -162,42 +162,12 @@ TopK_PermT.test=function(X,nA,nB,
 
 
     #---------------------------------------------------------------
-    # Get the BPO p-values
-    # BPO: best possible outcome
-    # BPO p-value keeps track of the number of entries at the BPO
-    # !! Have to think about ramifications of two-sided tests !!
-    #---------------------------------------------------------------
-    p.BPO=min(WRS,na.rm=T)
-
-    jBPO=function(pvec) sum(pvec==p.BPO)
-    prm.BPO=apply(ExactWRS,2,jBPO)
-    BPO.pvalues= 1-rank(prm.BPO,ties="max")/length(prm.BPO)
-
-    # consider a k dependent BPO adjustment:
-    #  if # BPO > K then use min(BPO.pvalue, Kpval)
-
-    KpvalsBPO=Kpvals
-
-    for(k in 1:nK){
-        swapDX=which(prm.BPO>Kvals[k])
-        if(length(swapDX)>0){
-            swapDX=swapDX[BPO.pvalues[swapDX]<Kpvals[swapDX,k]]
-            KpvalsBPO[swapDX,k]=BPO.pvalues[swapDX]
-        }
-    }
-    # plot(-log10(Kpvals),-log10(KpvalsBPO));abline(0,1,col=2)
-
-    KminP.BPO=apply(KpvalsBPO,1,min)
-
-
-    #---------------------------------------------------------------
     #  format output
     #---------------------------------------------------------------
 
     #  p.values
-    p.values=c(Tadj, mean(KminP<=min(Tadj)),
-               BPO.pvalues[1],mean(KminP.BPO<=KminP.BPO[1]))
-    names(p.values)=c(paste("top",Kvals,sep=""),"minP.allk","BPO.pvalue","minP.allk.BPO")
+    p.values=c(Tadj, mean(KminP<=min(Tadj)))
+    names(p.values)=c(paste("top",Kvals,sep=""),"minP.allk")
 
     # actual K
     # note: due to ties, can end up with more than K values tied at the top.
@@ -218,8 +188,7 @@ TopK_PermT.test=function(X,nA,nB,
     if(vrb) print(round(p.values,4))
 
     if(ReturnType=="list") return(list(p.values=p.values,K.counts=K.counts,K.values=Kvals,
-                                       N=N,nA=nA,nB=nB,nPerm=nPerm,
-                                       BPO.pvalue=BPO.pvalues[1])
+                                       N=N,nA=nA,nB=nB,nPerm=nPerm)
     )
 
 
