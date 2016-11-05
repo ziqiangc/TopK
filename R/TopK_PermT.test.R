@@ -98,7 +98,21 @@ TopK_PermT.test=function(X,nA,nB,
 
 
     # OPTION 2
-    # t.test(xn, yn, var.equal=TRUE)$p.value
+
+    # allp <- array(NA, c(nrow(X),nPerm))
+    # for (h in 1:nPerm) {
+    #     for (i in 1:nrow(X)) {
+    #         idx <- PermMat[,h]
+    #         allp[i,h] <- t.test(X[i,idx], X[i,setdiff(1:N, idx)], var.equal = T)$p.value
+    #     }
+    # }
+
+    #--- The code below runs 40% slower
+    # tScan <- function(i,idx) t.test(X[i,idx], X[i,setdiff(1:N, idx)], var.equal = T)$p.value
+    # tScan_h=function(h) mapply(tScan, 1:nrow(X),MoreArgs=list(idx=PermMat[,h]))
+    #
+    # res=mapply(tScan_h,1:nPerm)
+
 
 
     #---------------------------------------------------------------
