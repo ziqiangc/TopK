@@ -8,8 +8,11 @@
 #' @param nB number of samples in group 2
 #' @param Kvals a numeric vector indicating how many "K" we choose.
 #' @param B the number of inner permutation, default is "0" for exact test.
+#' @param alternative a character string specifying the alternative hypothesis,
+#'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
+#'          You can specify just the initial letter.
 #' @param ReturnType character(1) specify how to return the results.
-#'          Could be "list" or "vector". See detail.
+#'          Could be \code{"list"} or \code{"vector"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
 #'
 #' @examples TopK_PermT.test(X,7,7)
@@ -21,9 +24,10 @@
 TopK_PermT.test=function(X,nA,nB,
                        Kvals=c(1,2,3,4,5,10,25),
                        B=0,# set B=0 for exact test
+                       alternative = c("two.sided", "less", "greater"),
                        ReturnType="list",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
-
+    # alternative <- match.arg(alternative)
     N=nA+nB
     PermMat=combn(N,nA)
     nPerm=dim(PermMat)[2]
@@ -38,62 +42,12 @@ TopK_PermT.test=function(X,nA,nB,
 
     # OPTION 1
     # adapt the intermediate function binary.v in package 'broman'
-    binary.v <- function (n)
-    {
-        x <- 1:(2^n)
-        mx <- max(x)
-        digits <- floor(log2(mx))
-        ans <- 0:(digits - 1)
-        lx <- length(x)
-        x <- matrix(rep(x, rep(digits, lx)), ncol = lx)
-        (x%/%2^ans)%%2
-    }
 
-
-    perm.test <- function (x, y, var.equal = TRUE, pval = TRUE)
-    {
-        kx <- length(x)
-        ky <- length(y)
-        n <- kx + ky
-        X <- c(x, y)
-        # z <- rep(1:0, c(kx, ky))
-
-        if(pval){
-            pobs <- t.test(x, y, var.equal = var.equal)$p.value
-
-            o <- binary.v(n)
-            o <- o[, apply(o, 2, sum) == kx]
-            nc <- choose(n, kx)
-            allp <- 1:nc
-            for (i in 1:nc) {
-                xn <- X[o[, i] == 1]
-                yn <- X[o[, i] == 0]
-                allp[i] <- t.test(xn, yn, var.equal = var.equal)$p.value
-            }
-
-            return(allp)
-
-        } else {
-
-            tobs <- t.test(x, y, var.equal = var.equal)$statistic
-
-            o <- binary.v(n)
-            o <- o[, apply(o, 2, sum) == kx]
-            nc <- choose(n, kx)
-            allt <- 1:nc
-            for (i in 1:nc) {
-                xn <- X[o[, i] == 1]
-                yn <- X[o[, i] == 0]
-                allt[i] <- t.test(xn, yn, var.equal = var.equal)$statistic
-            }
-
-            return(allt)
-        }
-    }
+    # Put the functions outside the parents function
 
     if(vrb) cat("   Getting permutation t values.",fill=T)
 
-    permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)])
+    permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)], alternative = alternative)
     ExactWRS=t(mapply(permScan, 1:nrow(X)))
 
 
@@ -213,5 +167,62 @@ TopK_PermT.test=function(X,nA,nB,
 
 }
 
+
+
+binary.v <- function (n)
+{
+    x <- 1:(2^n)
+    mx <- max(x)
+    digits <- floor(log2(mx))
+    ans <- 0:(digits - 1)
+    lx <- length(x)
+    x <- matrix(rep(x, rep(digits, lx)), ncol = lx)
+    (x%/%2^ans)%%2
+}
+
+
+
+perm.test <- function (x, y, alternative = c("two.sided", "less", "greater"),
+                       var.equal = TRUE, pval = TRUE)
+{
+    # alternative <- match.arg(alternative)
+    kx <- length(x)
+    ky <- length(y)
+    n <- kx + ky
+    X <- c(x, y)
+    # z <- rep(1:0, c(kx, ky))
+
+    if(pval){
+        pobs <- t.test(x, y, var.equal = var.equal, alternative=alternative)$p.value
+
+        o <- binary.v(n)
+        o <- o[, apply(o, 2, sum) == kx]
+        nc <- choose(n, kx)
+        allp <- 1:nc
+        for (i in 1:nc) {
+            xn <- X[o[, i] == 1]
+            yn <- X[o[, i] == 0]
+            allp[i] <- t.test(xn, yn, var.equal = var.equal, alternative = alternative)$p.value
+        }
+
+        return(allp)
+
+    } else {
+
+        tobs <- t.test(x, y, var.equal = var.equal, alternative = alternative)$statistic
+
+        o <- binary.v(n)
+        o <- o[, apply(o, 2, sum) == kx]
+        nc <- choose(n, kx)
+        allt <- 1:nc
+        for (i in 1:nc) {
+            xn <- X[o[, i] == 1]
+            yn <- X[o[, i] == 0]
+            allt[i] <- t.test(xn, yn, var.equal = var.equal, alternative = alternative)$statistic
+        }
+
+        return(allt)
+    }
+}
 
 

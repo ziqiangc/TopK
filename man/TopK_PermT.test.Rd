@@ -5,7 +5,8 @@
 \title{TopK exact test based on permutation T p-values}
 \usage{
 TopK_PermT.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
-  ReturnType = "list", vrb = T)
+  alternative = c("two.sided", "less", "greater"), ReturnType = "list",
+  vrb = T)
 }
 \arguments{
 \item{X}{a data matrix containing features as rows and samples as columns.}
@@ -18,8 +19,12 @@ TopK_PermT.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
 
 \item{B}{the number of inner permutation, default is "0" for exact test.}
 
+\item{alternative}{a character string specifying the alternative hypothesis,
+must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
+You can specify just the initial letter.}
+
 \item{ReturnType}{character(1) specify how to return the results.
-Could be "list" or "vector". See detail.}
+Could be \code{"list"} or \code{"vector"}. See detail.}
 
 \item{vrb}{a logical vector indicating TRUE when show some words while running, FALSE otherwise.}
 }

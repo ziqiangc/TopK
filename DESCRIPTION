@@ -1,6 +1,6 @@
 Package: TopK
 Title: TopK Exact Test
-Version: 0.0.2.1
+Version: 0.0.3
 Authors@R: c(person("Ziqiang", "Chen", email = "ziqiangc@buffalo.edu", role = c("aut", "cre")),person("Daniel", "Gaile", email = "dpgaile@buffalo.edu", role = c("aut")))
 Description: We provide a seminal exact test for the hypothesis that
     at least one of a list of Top-K features is truly significant.

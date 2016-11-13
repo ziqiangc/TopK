@@ -4,7 +4,8 @@
 \alias{CreateWRSobj}
 \title{Create WRS Object}
 \usage{
-CreateWRSobj(nA, nB, inclPermMat = T)
+CreateWRSobj(nA, nB, alternative = c("two.sided", "less", "greater"),
+  inclPermMat = T)
 }
 \arguments{
 \item{nA}{the number of sample in the first group}

@@ -8,11 +8,14 @@
 #' @param nB number of samples in group 2
 #' @param Kvals a numeric vector indicating how many "K" we choose.
 #' @param B the number of inner permutation, default is "0" for exact test.
+#' @param alternative a character string specifying the alternative hypothesis,
+#'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
+#'          You can specify just the initial letter.
 #' @param ReturnType character(1) specify how to return the results.
-#'          Could be "list" or "vector". See detail.
+#'          Could be \code{"list"} or \code{"vector"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
 #'
-#' @examples TopK_WRS.test(X,WRSobj)
+#' @examples TopK_WRS.test(X,7,7)
 #'
 #' @import MASS
 #'
@@ -21,10 +24,11 @@
 TopK_WRS.test=function(X,nA,nB,
                              Kvals=c(1,2,3,4,5,10,25),
                              B=0,# set B=0 for exact test
+                             alternative = c("two.sided", "less", "greater"),
                              ReturnType="list",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
-
-    WRSobj = CreateWRSobj(nA, nB)
+    # alternative <- match.arg(alternative)
+    WRSobj = CreateWRSobj(nA, nB, alternative=alternative)
 
     # Grab important objects from WRSobj
     N=WRSobj$N
@@ -195,9 +199,9 @@ TopK_WRS.test=function(X,nA,nB,
 
 
 
-CreateWRSobj=function(nA,nB,inclPermMat=T){
+CreateWRSobj=function(nA, nB, alternative= c("two.sided", "less", "greater"), inclPermMat=T){
     # nA=10; nB=10
-
+    # alternative = match.arg(alternative)
     N=nA+nB
     WRS.lwr=sum(1:nA)
     WRS.upr=sum((N-nA+1):N)
@@ -208,7 +212,7 @@ CreateWRSobj=function(nA,nB,inclPermMat=T){
     PermWRS=colSums(PermMat)
     for(i in WRS.lwr:WRS.upr){
         idx=which(PermWRS==i)[1]
-        WRS[i]=WRSpvals=wilcox.test(PermMat[,idx],setdiff(1:N,PermMat[,idx]))$p.value
+        WRS[i]=WRSpvals=wilcox.test(PermMat[,idx],setdiff(1:N,PermMat[,idx]), alternative=alternative)$p.value
     }
 
     WRSobj=list(WRS=WRS,N=N,nA=nA,nB=nB)
