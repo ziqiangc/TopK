@@ -4,7 +4,8 @@
 #' The univariate p-values based on Wilcoxon rank sum test.
 #'
 #' @param X a data matrix containing features as rows and samples as columns.
-#' @param WRSobj a object obtained from CreateWRSobj function.
+#' @param nA number of samples in group 1
+#' @param nB number of samples in group 2
 #' @param Kvals a numeric vector indicating how many "K" we choose.
 #' @param B the number of inner permutation, default is "0" for exact test.
 #' @param ReturnType character(1) specify how to return the results.
@@ -17,11 +18,13 @@
 #'
 #' @export
 
-TopK_WRS.test=function(X,WRSobj,
+TopK_WRS.test=function(X,nA,nB,
                              Kvals=c(1,2,3,4,5,10,25),
                              B=0,# set B=0 for exact test
                              ReturnType="list",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
+
+    WRSobj = CreateWRSobj(nA, nB)
 
     # Grab important objects from WRSobj
     N=WRSobj$N
@@ -189,6 +192,31 @@ TopK_WRS.test=function(X,WRSobj,
     }
 
 }
+
+
+
+CreateWRSobj=function(nA,nB,inclPermMat=T){
+    # nA=10; nB=10
+
+    N=nA+nB
+    WRS.lwr=sum(1:nA)
+    WRS.upr=sum((N-nA+1):N)
+    WRS=rep(NA,WRS.upr)
+
+    # brute force it, because we assume that nA and nB small enough that we can..
+    PermMat=combn(N,nA)
+    PermWRS=colSums(PermMat)
+    for(i in WRS.lwr:WRS.upr){
+        idx=which(PermWRS==i)[1]
+        WRS[i]=WRSpvals=wilcox.test(PermMat[,idx],setdiff(1:N,PermMat[,idx]))$p.value
+    }
+
+    WRSobj=list(WRS=WRS,N=N,nA=nA,nB=nB)
+    if(inclPermMat) WRSobj$PermMat=PermMat
+
+    return(WRSobj)
+}
+
 
 
 

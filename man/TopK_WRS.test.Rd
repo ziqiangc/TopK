@@ -4,13 +4,15 @@
 \alias{TopK_WRS.test}
 \title{TopK exact test based on WRS p-values}
 \usage{
-TopK_WRS.test(X, WRSobj, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
+TopK_WRS.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
   ReturnType = "list", vrb = T)
 }
 \arguments{
 \item{X}{a data matrix containing features as rows and samples as columns.}
 
-\item{WRSobj}{a object obtained from CreateWRSobj function.}
+\item{nA}{number of samples in group 1}
+
+\item{nB}{number of samples in group 2}
 
 \item{Kvals}{a numeric vector indicating how many "K" we choose.}
 
