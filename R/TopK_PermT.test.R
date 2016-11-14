@@ -12,7 +12,7 @@
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 #'          You can specify just the initial letter.
 #' @param ReturnType character(1) specify how to return the results.
-#'          Could be \code{"list"} or \code{"vector"}. See detail.
+#'          Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
 #'
 #' @examples TopK_PermT.test(X,7,7)
@@ -25,7 +25,7 @@ TopK_PermT.test=function(X,nA,nB,
                        Kvals=c(1,2,3,4,5,10,25),
                        B=0,# set B=0 for exact test
                        alternative = c("two.sided", "less", "greater"),
-                       ReturnType="list",vrb=T){
+                       ReturnType="TopK",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
     # alternative <- match.arg(alternative)
     N=nA+nB
@@ -163,6 +163,18 @@ TopK_PermT.test=function(X,nA,nB,
 
     if(ReturnType=="vector"){
         return(c(p.values,Kvals,K.counts[1,],K.counts[2,],K.counts[3,]))
+    }
+
+    if(ReturnType=="TopK") {
+        res <- list(p.values=p.values,
+                    K.counts=K.counts,
+                    TopK = TopK,
+                    TopKcdf = TopKcdf,
+                    Tadj = Tadj,
+                    K.values=Kvals,N=N,nA=nA,nB=nB,nPerm=nPerm
+        )
+        class(res) <- c(class(res), "TopK")
+        return(res)
     }
 
 }
