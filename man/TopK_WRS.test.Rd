@@ -5,7 +5,7 @@
 \title{TopK exact test based on WRS p-values}
 \usage{
 TopK_WRS.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
-  alternative = c("two.sided", "less", "greater"), ReturnType = "list",
+  alternative = c("two.sided", "less", "greater"), ReturnType = "TopK",
   vrb = T)
 }
 \arguments{
@@ -24,7 +24,7 @@ must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 You can specify just the initial letter.}
 
 \item{ReturnType}{character(1) specify how to return the results.
-Could be \code{"list"} or \code{"vector"}. See detail.}
+Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.}
 
 \item{vrb}{a logical vector indicating TRUE when show some words while running, FALSE otherwise.}
 }

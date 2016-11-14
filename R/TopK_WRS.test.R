@@ -12,7 +12,7 @@
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 #'          You can specify just the initial letter.
 #' @param ReturnType character(1) specify how to return the results.
-#'          Could be \code{"list"} or \code{"vector"}. See detail.
+#'          Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
 #'
 #' @examples TopK_WRS.test(X,7,7)
@@ -25,7 +25,7 @@ TopK_WRS.test=function(X,nA,nB,
                              Kvals=c(1,2,3,4,5,10,25),
                              B=0,# set B=0 for exact test
                              alternative = c("two.sided", "less", "greater"),
-                             ReturnType="list",vrb=T){
+                             ReturnType="TopK",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
     # alternative <- match.arg(alternative)
     WRSobj = CreateWRSobj(nA, nB, alternative=alternative)
@@ -162,9 +162,8 @@ TopK_WRS.test=function(X,nA,nB,
     #---------------------------------------------------------------
 
     #  p.values
-    p.values=c(Tadj, mean(KminP<=min(Tadj)),
-               BPO.pvalues[1],mean(KminP.BPO<=KminP.BPO[1]))
-    names(p.values)=c(paste("top",Kvals,sep=""),"minP.allk","BPO.pvalue","minP.allk.BPO")
+    p.values=c(Tadj, mean(KminP<=min(Tadj)))
+    names(p.values)=c(paste("top",Kvals,sep=""),"minP.allk")
 
     # actual K
     # note: due to ties, can end up with more than K values tied at the top.
@@ -185,14 +184,25 @@ TopK_WRS.test=function(X,nA,nB,
     if(vrb) print(round(p.values,4))
 
     if(ReturnType=="list") return(list(p.values=p.values,K.counts=K.counts,K.values=Kvals,
-                                       N=N,nA=nA,nB=nB,nPerm=nPerm,
-                                       BPO.pvalue=BPO.pvalues[1])
+                                       N=N,nA=nA,nB=nB,nPerm=nPerm)
     )
 
 
 
     if(ReturnType=="vector"){
         return(c(p.values,Kvals,K.counts[1,],K.counts[2,],K.counts[3,]))
+    }
+
+    if(ReturnType=="TopK") {
+        res <- list(p.values=p.values,
+                    K.counts=K.counts,
+                    TopK = TopK,
+                    TopKcdf = TopKcdf,
+                    Tadj = Tadj,
+                    K.values=Kvals,N=N,nA=nA,nB=nB,nPerm=nPerm
+                    )
+        res <- c(class(res), "TopK")
+        return(res)
     }
 
 }
