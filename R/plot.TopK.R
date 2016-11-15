@@ -1,9 +1,9 @@
 #' @export
 plot.TopK <- function(x, WobsDX=1, ...) {
-    stopifnot("TopK" %in% class(x))
-    stopifnot(exists(x$TopK))
+    stopifnot(any(class(x))=="TopK")
+    stopifnot(any(names(x))=="TopK")
     stopifnot(is.list(x$TopK))
-    stopifnot(2 %in% x$K.values)
+    stopifnot(any(x$K.values)==2)
 
     TopK = x$TopK
     Top2=TopK[[2]]
