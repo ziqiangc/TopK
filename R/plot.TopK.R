@@ -43,7 +43,7 @@ plot.TopK <- function(x, WobsDX=1, ...) {
                 Px1x2=mean((lgTop2[1,]>=x1)&(lgTop2[2,]>=x2))
                 tcnt=sum(((lgTop2[1,])==x1)
                          &((lgTop2[2,])==x2) )
-                cat(x1,x2,tcnt,Px1x2,fill=T)
+                #cat(x1,x2,tcnt,Px1x2,fill=T)
 
                 if((tcnt>0)&(Px1x2<=CumPobs)){
 
