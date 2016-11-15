@@ -199,7 +199,8 @@ TopK_WRS.test=function(X,nA,nB,
                     TopK = TopK,
                     TopKcdf = TopKcdf,
                     Tadj = Tadj,
-                    K.values=Kvals,N=N,nA=nA,nB=nB,nPerm=nPerm
+                    K.values=Kvals,N=N,nA=nA,nB=nB,nPerm=nPerm,
+                    method = "WRS"
                     )
         class(res) <- c(class(res), "TopK")
         return(res)
