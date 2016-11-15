@@ -1,7 +1,7 @@
 #' @export
 plot.TopK <- function(x, WobsDX=1, ...) {
-    stopifnot(any(class(x))=="TopK")
-    stopifnot(any(names(x))=="TopK")
+    stopifnot(any(class(x)=="TopK"))
+    stopifnot(any(names(x)=="TopK"))
     stopifnot(is.list(x$TopK))
     stopifnot(any(x$K.values)==2)
 
