@@ -137,6 +137,10 @@ TopK_PermT.test=function(X,nA,nB,
     p.values=c(Tadj, mean(KminP<=min(Tadj)))
     names(p.values)=c(paste("top",Kvals,sep=""),"minP.allk")
 
+    # Tobs
+    getTobs = function(i) TopKcdf[[i]][1]
+    Tobs = mapply(getTobs, 1:length(Kvals))
+    names(Tobs)=c(paste("top",Kvals,sep=""))
     # actual K
     # note: due to ties, can end up with more than K values tied at the top.
     # have some numerical precision / rounding issues!
@@ -155,24 +159,25 @@ TopK_PermT.test=function(X,nA,nB,
 
     if(vrb) print(round(p.values,4))
 
-    if(ReturnType=="list") return(list(p.values=p.values,K.counts=K.counts,K.values=Kvals,
+    if(ReturnType=="list") return(list(p.values=p.values,Tobs=Tobs,K.counts=K.counts,K.values=Kvals,
                                        N=N,nA=nA,nB=nB,nPerm=nPerm)
     )
 
 
 
     if(ReturnType=="vector"){
-        return(c(p.values,Kvals,K.counts[1,],K.counts[2,],K.counts[3,]))
+        return(c(p.values,Tobs,Kvals,K.counts[1,],K.counts[2,],K.counts[3,]))
     }
 
     if(ReturnType=="TopK") {
         res <- list(p.values=p.values,
+                    Tobs=Tobs,
                     K.counts=K.counts,
                     TopK = TopK,
                     TopKcdf = TopKcdf,
                     Tadj = Tadj,
                     K.values=Kvals,N=N,nA=nA,nB=nB,nPerm=nPerm,
-                    method = "PermT"
+                    method = "Permutation t-test"
         )
         class(res) <- c(class(res), "TopK")
         return(res)

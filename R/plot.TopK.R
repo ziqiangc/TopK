@@ -134,7 +134,7 @@ plot.TopK <- function(x, WobsDX=1, ...) {
              xlab=expression(paste("-log"[10] , "p"[K:1])),
              ylab=expression(paste("-log"[10] , "p"[K:2])))
         axis(1); axis(2)
-        smoothScatter(X1.grey, X2.grey, colramp=colorRampPalette(c(rgb(1, 1, 1, 0), rgb(0, 1, 1, 1)), alpha=TRUE), add=T)
+        smoothScatter(X1.grey, X2.grey, colramp=colorRampPalette(c(rgb(1, 1, 1, 0), "grey33"), alpha=TRUE), add=T)
         points(X1.green, X2.green, pch="+", col="green")
         points(X1.blue, X2.blue, pch="o", col="blue")
         points(X1.purple, X2.purple, pch=7, col="purple")
