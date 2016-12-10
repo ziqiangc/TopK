@@ -57,7 +57,8 @@ TopK.test <- function(x, g,
 
     X = x [ ,order(g) ]
 
-
+    nA = length(g[g==unique(g)[1]])
+    nB = length(g[g==unique(g)[2]])
 
     if (method == "WRS") {
         RVAL <- TopK_WRS.test(X=X, nA = nA, nB = nB,
@@ -68,7 +69,7 @@ TopK.test <- function(x, g,
     }
 
     if (method == "t.test") {
-        RVAL <- TopK_PermT.test(X=x, nA = nA, nB = nB,
+        RVAL <- TopK_PermT.test(X=X, nA = nA, nB = nB,
                                 Kvals = Kvals,
                                 B = B,
                                 alternative = alternative,

@@ -15,7 +15,7 @@ TopK_WRS.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
 
 \item{nB}{number of samples in group 2}
 
-\item{Kvals}{a numeric vector indicating how many "K" we choose.}
+\item{Kvals}{a numeric vector indicating how many \code{"K"} we choose.}
 
 \item{B}{the number of inner permutation, default is "0" for exact test.}
 

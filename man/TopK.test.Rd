@@ -13,7 +13,7 @@ TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
 
 \item{g}{a vector or factor object giving the group for the corresponding samples of x.}
 
-\item{Kvals}{a numeric vector indicating how many "K" we choose.}
+\item{Kvals}{a numeric vector indicating how many \code{"K"} we choose.}
 
 \item{method}{a character string specifying which method used in TopK test,
 must be one of \code{"WRS"} (default), "t.test". See detail.}
