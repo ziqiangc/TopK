@@ -9,6 +9,8 @@ TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
   ReturnType = "TopK", vrb = T)
 }
 \arguments{
+\item{x}{a data matrix containing features as rows and samples as columns.}
+
 \item{g}{a vector or factor object giving the group for the corresponding samples of x.}
 
 \item{Kvals}{a numeric vector indicating how many "K" we choose.}
@@ -26,8 +28,6 @@ You can specify just the initial letter.}
 Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.}
 
 \item{vrb}{a logical vector indicating TRUE when show some words while running, FALSE otherwise.}
-
-\item{X}{a data matrix containing features as rows and samples as columns.}
 }
 \description{
 This function perform TopK exact test on a two group data set (Case-Control study).

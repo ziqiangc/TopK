@@ -3,9 +3,9 @@
 #' This function perform TopK exact test on a two group data set (Case-Control study).
 #' The univariate p-values were calculated based on mulitiple choices of test.
 #'
-#' @param X a data matrix containing features as rows and samples as columns.
+#' @param x a data matrix containing features as rows and samples as columns.
 #' @param g a vector or factor object giving the group for the corresponding samples of x.
-#' @param Kvals a numeric vector indicating how many "K" we choose.
+#' @param Kvals a numeric vector indicating how many \code{"K"} we choose.
 #' @param method a character string specifying which method used in TopK test,
 #'          must be one of \code{"WRS"} (default), "t.test". See detail.
 #' @param B the number of inner permutation, default is "0" for exact test.

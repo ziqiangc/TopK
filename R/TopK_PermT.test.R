@@ -6,7 +6,7 @@
 #' @param X a data matrix containing features as rows and samples as columns.
 #' @param nA number of samples in group 1
 #' @param nB number of samples in group 2
-#' @param Kvals a numeric vector indicating how many "K" we choose.
+#' @param Kvals a numeric vector indicating how many \code{"K"} we choose.
 #' @param B the number of inner permutation, default is "0" for exact test.
 #' @param alternative a character string specifying the alternative hypothesis,
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
