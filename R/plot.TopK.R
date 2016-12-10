@@ -19,7 +19,7 @@ plot.TopK <- function(x, WobsDX=1, ...) {
     stopifnot(any(x$K.values==2))
 
     TopK = x$TopK
-    Top2=TopK[[2]]
+    Top2=TopK[[which(x$K.values==2)]]
     lgTop2=-log10(Top2)
     WobsDX=WobsDX
 
