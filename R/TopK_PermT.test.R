@@ -141,38 +141,38 @@ TopK_PermT.test=function(X,nA,nB,
     getTobs = function(i) TopKcdf[[i]][1]
     Tobs = mapply(getTobs, 1:length(Kvals))
     names(Tobs)=c(paste("top",Kvals,sep=""))
-    # actual K
-    # note: due to ties, can end up with more than K values tied at the top.
-    # have some numerical precision / rounding issues!
-    # as a work around, only keep the 8 most significant digits
-    PrecExactWRS=round(ExactWRS[,1],8)
-    unqP=sort(unique(PrecExactWRS))
-    K.counts=summary(factor(PrecExactWRS,levels=unqP),maxsum=1e6)
-    K.counts=rbind(K.counts,cumsum(K.counts))
-
-    # now, match up the numbers of each of the K.cumsum values that are the alt model
-    K.alt=numeric()
-    for(ik in 1:length(unqP)) K.alt=c(K.alt,sum(Mdl[which(PrecExactWRS==unqP[ik])]))
-    K.counts=rbind(K.counts,K.alt)
-    K.counts=rbind(K.counts,cumsum(K.alt))
+    # # actual K
+    # # note: due to ties, can end up with more than K values tied at the top.
+    # # have some numerical precision / rounding issues!
+    # # as a work around, only keep the 8 most significant digits
+    # PrecExactWRS=round(ExactWRS[,1],8)
+    # unqP=sort(unique(PrecExactWRS))
+    # K.counts=summary(factor(PrecExactWRS,levels=unqP),maxsum=1e6)
+    # K.counts=rbind(K.counts,cumsum(K.counts))
+    #
+    # # now, match up the numbers of each of the K.cumsum values that are the alt model
+    # K.alt=numeric()
+    # for(ik in 1:length(unqP)) K.alt=c(K.alt,sum(Mdl[which(PrecExactWRS==unqP[ik])]))
+    # K.counts=rbind(K.counts,K.alt)
+    # K.counts=rbind(K.counts,cumsum(K.alt))
 
 
     if(vrb) print(round(p.values,4))
 
-    if(ReturnType=="list") return(list(p.values=p.values,Tobs=Tobs,K.counts=K.counts,K.values=Kvals,
+    if(ReturnType=="list") return(list(p.values=p.values,Tobs=Tobs,K.values=Kvals,
                                        N=N,nA=nA,nB=nB,nPerm=nPerm)
     )
 
 
 
     if(ReturnType=="vector"){
-        return(c(p.values,Tobs,Kvals,K.counts[1,],K.counts[2,],K.counts[3,]))
+        return(c(p.values,Tobs,Kvals))
     }
 
     if(ReturnType=="TopK") {
         res <- list(p.values=p.values,
                     Tobs=Tobs,
-                    K.counts=K.counts,
+                    # K.counts=K.counts,
                     TopK = TopK,
                     TopKcdf = TopKcdf,
                     Tadj = Tadj,
