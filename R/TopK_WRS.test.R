@@ -11,6 +11,7 @@
 #' @param alternative a character string specifying the alternative hypothesis,
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 #'          You can specify just the initial letter.
+#' @param ties.method a character string specifying how ties are treated, see ‘Details’; can be abbreviated.
 #' @param ReturnType character(1) specify how to return the results.
 #'          Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
@@ -25,6 +26,7 @@ TopK_WRS.test=function(X,nA,nB,
                              Kvals=c(1,2,3,4,5,10,25),
                              B=0,# set B=0 for exact test
                              alternative = c("two.sided", "less", "greater"),
+                             ties.method = c("random", "min", "max", "average"),
                              ReturnType="TopK",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
     # alternative <- match.arg(alternative)
@@ -122,7 +124,7 @@ TopK_WRS.test=function(X,nA,nB,
 
     CDFmat=t(matrix(unlist(TopKcdf),ncol=nK))
 
-    ipval=function(pvec) rank(pvec,ties.method="max")
+    ipval=function(pvec) rank(pvec, ties.method = ties.method)
     Kpvals=apply(CDFmat,1,ipval)
     Kpvals=Kpvals/(dim(Kpvals)[1])
     KminP=apply(Kpvals,1,min)
@@ -134,27 +136,27 @@ TopK_WRS.test=function(X,nA,nB,
     # BPO p-value keeps track of the number of entries at the BPO
     # !! Have to think about ramifications of two-sided tests !!
     #---------------------------------------------------------------
-    p.BPO=min(WRS,na.rm=T)
-
-    jBPO=function(pvec) sum(pvec==p.BPO)
-    prm.BPO=apply(ExactWRS,2,jBPO)
-    BPO.pvalues= 1-rank(prm.BPO,ties="max")/length(prm.BPO)
-
-    # consider a k dependent BPO adjustment:
-    #  if # BPO > K then use min(BPO.pvalue, Kpval)
-
-    KpvalsBPO=Kpvals
-
-    for(k in 1:nK){
-        swapDX=which(prm.BPO>Kvals[k])
-        if(length(swapDX)>0){
-            swapDX=swapDX[BPO.pvalues[swapDX]<Kpvals[swapDX,k]]
-            KpvalsBPO[swapDX,k]=BPO.pvalues[swapDX]
-        }
-    }
-    # plot(-log10(Kpvals),-log10(KpvalsBPO));abline(0,1,col=2)
-
-    KminP.BPO=apply(KpvalsBPO,1,min)
+    # p.BPO=min(WRS,na.rm=T)
+    #
+    # jBPO=function(pvec) sum(pvec==p.BPO)
+    # prm.BPO=apply(ExactWRS,2,jBPO)
+    # BPO.pvalues= 1-rank(prm.BPO,ties=ties)/length(prm.BPO)
+    #
+    # # consider a k dependent BPO adjustment:
+    # #  if # BPO > K then use min(BPO.pvalue, Kpval)
+    #
+    # KpvalsBPO=Kpvals
+    #
+    # for(k in 1:nK){
+    #     swapDX=which(prm.BPO>Kvals[k])
+    #     if(length(swapDX)>0){
+    #         swapDX=swapDX[BPO.pvalues[swapDX]<Kpvals[swapDX,k]]
+    #         KpvalsBPO[swapDX,k]=BPO.pvalues[swapDX]
+    #     }
+    # }
+    # # plot(-log10(Kpvals),-log10(KpvalsBPO));abline(0,1,col=2)
+    #
+    # KminP.BPO=apply(KpvalsBPO,1,min)
 
 
     #---------------------------------------------------------------

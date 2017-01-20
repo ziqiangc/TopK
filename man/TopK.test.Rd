@@ -6,7 +6,8 @@
 \usage{
 TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
   "t.test"), B = 0, alternative = c("two.sided", "less", "greater"),
-  ReturnType = "TopK", vrb = T)
+  ties.method = c("random", "min", "max", "average"), ReturnType = "TopK",
+  vrb = T)
 }
 \arguments{
 \item{x}{a data matrix containing features as rows and samples as columns.}
@@ -23,6 +24,8 @@ must be one of \code{"WRS"} (default), "t.test". See detail.}
 \item{alternative}{a character string specifying the alternative hypothesis,
 must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 You can specify just the initial letter.}
+
+\item{ties.method}{a character string specifying how ties are treated, see ‘Details’; can be abbreviated.}
 
 \item{ReturnType}{character(1) specify how to return the results.
 Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.}
