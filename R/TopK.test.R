@@ -33,6 +33,8 @@ TopK.test <- function(x, g,
 
     method <- match.arg(method)
     alternative <- match.arg(alternative)
+    ties.method <- match.arg(ties.method)
+
     if (!is.numeric(x))
         stop("'x' must be numeric")
 
