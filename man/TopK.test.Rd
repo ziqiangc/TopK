@@ -4,7 +4,7 @@
 \alias{TopK.test}
 \title{TopK exact test (main function)}
 \usage{
-TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
+TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS", "perm",
   "t.test"), B = 0, alternative = c("two.sided", "less", "greater"),
   ties.method = c("random", "min", "max", "average"), ReturnType = "TopK",
   vrb = T)
@@ -17,7 +17,7 @@ TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
 \item{Kvals}{a numeric vector indicating how many \code{"K"} we choose.}
 
 \item{method}{a character string specifying which method used in TopK test,
-must be one of \code{"WRS"} (default), "t.test". See detail.}
+must be one of \code{"WRS"} (default), \code{"perm"} and \code{"t.test"}. See detail.}
 
 \item{B}{the number of inner permutation, default is "0" for exact test.}
 

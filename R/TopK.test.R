@@ -7,7 +7,7 @@
 #' @param g a vector or factor object giving the group for the corresponding samples of x.
 #' @param Kvals a numeric vector indicating how many \code{"K"} we choose.
 #' @param method a character string specifying which method used in TopK test,
-#'          must be one of \code{"WRS"} (default), "t.test". See detail.
+#'          must be one of \code{"WRS"} (default), \code{"perm"} and \code{"t.test"}. See detail.
 #' @param B the number of inner permutation, default is "0" for exact test.
 #' @param alternative a character string specifying the alternative hypothesis,
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
@@ -25,7 +25,7 @@
 #'
 TopK.test <- function(x, g,
                       Kvals=c(1,2,3,4,5,10,25),
-                      method = c("WRS", "t.test"),
+                      method = c("WRS", "perm", "t.test"),
                       B=0,# set B=0 for exact test
                       alternative = c("two.sided", "less", "greater"),
                       ties.method = c("random", "min", "max", "average"),
@@ -73,7 +73,7 @@ TopK.test <- function(x, g,
                              ReturnType=ReturnType,vrb=vrb)
     }
 
-    if (method == "t.test") {
+    if (method == "perm") {
         RVAL <- TopK_PermT.test(X=X, nA = nA, nB = nB,
                                 Kvals = Kvals,
                                 B = B,
@@ -81,6 +81,16 @@ TopK.test <- function(x, g,
                                 ties.method = ties.method,
                                 ReturnType=ReturnType,vrb=vrb)
     }
+
+    if (method == "t.test") {
+        RVAL <- TopK_t.test(X=X, nA = nA, nB = nB,
+                                Kvals = Kvals,
+                                B = B,
+                                alternative = alternative,
+                                ties.method = ties.method,
+                                ReturnType=ReturnType,vrb=vrb)
+    }
+
 
     RVAL$data.name = DNAME
 
