@@ -13,6 +13,8 @@
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 #'          You can specify just the initial letter.
 #' @param ties.method a character string specifying how ties are treated, see ‘Details’; can be abbreviated.
+#' @param pval Only option for permutation test method. If TRUE, the permutation matrix will be populated by p-values from t-test.
+#'             If FALSE, the permutation matrix will be directly populated by t statistics (negative absolute value).
 #' @param ReturnType character(1) specify how to return the results.
 #'          Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
@@ -29,6 +31,7 @@ TopK.test <- function(x, g,
                       B=0,# set B=0 for exact test
                       alternative = c("two.sided", "less", "greater"),
                       ties.method = c("random", "min", "max", "average"),
+                      pval=TRUE,
                       ReturnType="TopK",vrb=T) {
 
     method <- match.arg(method)
@@ -79,6 +82,7 @@ TopK.test <- function(x, g,
                                 B = B,
                                 alternative = alternative,
                                 ties.method = ties.method,
+                                pval=pval,
                                 ReturnType=ReturnType,vrb=vrb)
     }
 

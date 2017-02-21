@@ -12,6 +12,8 @@
 #'          must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 #'          You can specify just the initial letter.
 #' @param ties.method a character string specifying how ties are treated, see ‘Details’; can be abbreviated.
+#' @param pval If TRUE, the permutation matrix will be populated by p-values from t-test.
+#'             If FALSE, the permutation matrix will be directly populated by t statistics (negative absolute value).
 #' @param ReturnType character(1) specify how to return the results.
 #'          Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.
 #' @param vrb a logical vector indicating TRUE when show some words while running, FALSE otherwise.
@@ -27,6 +29,7 @@ TopK_PermT.test=function(X,nA,nB,
                        B=0,# set B=0 for exact test
                        alternative = c("two.sided", "less", "greater"),
                        ties.method = c("random", "min", "max", "average"),
+                       pval=TRUE,
                        ReturnType="TopK",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
     # alternative <- match.arg(alternative)
@@ -49,9 +52,14 @@ TopK_PermT.test=function(X,nA,nB,
 
     if(vrb) cat("   Getting permutation t values.",fill=T)
 
-    permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)], alternative = alternative)
+    permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)], alternative = alternative, pval=pval)
     ExactWRS=t(mapply(permScan, 1:nrow(X)))
 
+    if (pval) {
+        ExactWRS = ExactWRS
+    } else {
+        ExactWRS = -abs(ExactWRS)
+    }
 
     # OPTION 2
 
@@ -203,7 +211,7 @@ binary.v <- function (n)
 
 
 perm.test <- function (x, y, alternative = c("two.sided", "less", "greater"),
-                       var.equal = TRUE, pval = TRUE)
+                       var.equal = TRUE, pval)
 {
     # alternative <- match.arg(alternative)
     kx <- length(x)

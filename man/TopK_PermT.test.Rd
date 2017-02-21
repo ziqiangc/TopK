@@ -6,7 +6,7 @@
 \usage{
 TopK_PermT.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
   alternative = c("two.sided", "less", "greater"), ties.method = c("random",
-  "min", "max", "average"), ReturnType = "TopK", vrb = T)
+  "min", "max", "average"), pval = TRUE, ReturnType = "TopK", vrb = T)
 }
 \arguments{
 \item{X}{a data matrix containing features as rows and samples as columns.}
@@ -24,6 +24,9 @@ must be one of \code{"two.sided"} (default), \code{"greater"} or \code{"less"}.
 You can specify just the initial letter.}
 
 \item{ties.method}{a character string specifying how ties are treated, see ‘Details’; can be abbreviated.}
+
+\item{pval}{If TRUE, the permutation matrix will be populated by p-values from t-test.
+If FALSE, the permutation matrix will be directly populated by t statistics (negative absolute value).}
 
 \item{ReturnType}{character(1) specify how to return the results.
 Could be \code{"list"}, \code{"vector"} or rich format \code{"TopK"}. See detail.}
