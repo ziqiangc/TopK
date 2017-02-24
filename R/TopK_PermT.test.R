@@ -211,7 +211,7 @@ binary.v <- function (n)
 
 
 perm.test <- function (x, y, alternative = c("two.sided", "less", "greater"),
-                       var.equal = TRUE, pval)
+                       var.equal = FALSE, pval)
 {
     # alternative <- match.arg(alternative)
     kx <- length(x)
