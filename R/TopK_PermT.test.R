@@ -53,13 +53,17 @@ TopK_PermT.test=function(X,nA,nB,
     if(vrb) cat("   Getting permutation t values.",fill=T)
 
     permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)], alternative = alternative, pval=pval)
-    ExactWRS=t(mapply(permScan, 1:nrow(X)))
-
+    Pmat=t(mapply(permScan, 1:nrow(X)))
+    
     if (pval) {
-        ExactWRS = ExactWRS
+      Pmat = Pmat
     } else {
-        ExactWRS = -abs(ExactWRS)
+      Pmat = -abs(Pmat)
     }
+    
+    PermPs=t(apply(Pmat,1,rank,ties.method="max")/nPerm)
+    
+
 
     # OPTION 2
 
@@ -85,7 +89,7 @@ TopK_PermT.test=function(X,nA,nB,
 
 
     GetTopK=function(K){
-        jgetK=function(j) ExactWRS[order(ExactWRS[,j])[1:K],j]
+        jgetK=function(j) PermPs[order(PermPs[,j])[1:K],j]
         if(K>1) return(mapply(jgetK,1:nPerm))
         if(K==1) return(matrix(mapply(jgetK,1:nPerm),nrow=1))
     }
@@ -151,20 +155,6 @@ TopK_PermT.test=function(X,nA,nB,
     getTobs = function(i) TopKcdf[[i]][1]
     Tobs = mapply(getTobs, 1:length(Kvals))
     names(Tobs)=c(paste("top",Kvals,sep=""))
-    # # actual K
-    # # note: due to ties, can end up with more than K values tied at the top.
-    # # have some numerical precision / rounding issues!
-    # # as a work around, only keep the 8 most significant digits
-    # PrecExactWRS=round(ExactWRS[,1],8)
-    # unqP=sort(unique(PrecExactWRS))
-    # K.counts=summary(factor(PrecExactWRS,levels=unqP),maxsum=1e6)
-    # K.counts=rbind(K.counts,cumsum(K.counts))
-    #
-    # # now, match up the numbers of each of the K.cumsum values that are the alt model
-    # K.alt=numeric()
-    # for(ik in 1:length(unqP)) K.alt=c(K.alt,sum(Mdl[which(PrecExactWRS==unqP[ik])]))
-    # K.counts=rbind(K.counts,K.alt)
-    # K.counts=rbind(K.counts,cumsum(K.alt))
 
 
     if(vrb) print(round(p.values,4))
