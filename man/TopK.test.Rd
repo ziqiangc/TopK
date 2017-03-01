@@ -6,7 +6,7 @@
 \usage{
 TopK.test(x, g, Kvals = c(1, 2, 3, 4, 5, 10, 25), method = c("WRS",
   "t.test"), B = 0, alternative = c("two.sided", "less", "greater"),
-  ties.method = c("random", "min", "max", "average"), pval = TRUE,
+  ties.method = c("random", "min", "max", "average"), pval = FALSE,
   ReturnType = "TopK", vrb = T)
 }
 \arguments{

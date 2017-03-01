@@ -31,7 +31,7 @@ TopK.test <- function(x, g,
                       B=0,# set B=0 for exact test
                       alternative = c("two.sided", "less", "greater"),
                       ties.method = c("random", "min", "max", "average"),
-                      pval=TRUE,
+                      pval=FALSE,
                       ReturnType="TopK",vrb=T) {
 
     method <- match.arg(method)

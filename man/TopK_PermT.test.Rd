@@ -6,7 +6,7 @@
 \usage{
 TopK_PermT.test(X, nA, nB, Kvals = c(1, 2, 3, 4, 5, 10, 25), B = 0,
   alternative = c("two.sided", "less", "greater"), ties.method = c("random",
-  "min", "max", "average"), pval = TRUE, ReturnType = "TopK", vrb = T)
+  "min", "max", "average"), pval = FALSE, ReturnType = "TopK", vrb = T)
 }
 \arguments{
 \item{X}{a data matrix containing features as rows and samples as columns.}

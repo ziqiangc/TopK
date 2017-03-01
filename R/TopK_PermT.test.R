@@ -29,7 +29,7 @@ TopK_PermT.test=function(X,nA,nB,
                        B=0,# set B=0 for exact test
                        alternative = c("two.sided", "less", "greater"),
                        ties.method = c("random", "min", "max", "average"),
-                       pval=TRUE,
+                       pval=FALSE,
                        ReturnType="TopK",vrb=T){
     # hrep=1; SimType="null1"; vrb=T; Kvals=c(1,2,3,4,5,10,25);B=0
     # alternative <- match.arg(alternative)
@@ -54,15 +54,15 @@ TopK_PermT.test=function(X,nA,nB,
 
     permScan <- function(i) perm.test(X[i, 1:nA], X[i, (nA+1):(nA+nB)], alternative = alternative, pval=pval)
     Pmat=t(mapply(permScan, 1:nrow(X)))
-    
+
     if (pval) {
       Pmat = Pmat
     } else {
       Pmat = -abs(Pmat)
     }
-    
+
     PermPs=t(apply(Pmat,1,rank,ties.method="max")/nPerm)
-    
+
 
 
     # OPTION 2
